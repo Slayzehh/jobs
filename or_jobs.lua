@@ -1,3 +1,4 @@
+
 ----------------------------------------------------
 --===================Aurelien=====================--
 ----------------------------------------------------
@@ -75,13 +76,13 @@ end)
 local myjob = 0
 
 
-RegisterNetEvent("or:f_getCash")
-AddEventHandler("or:f_getCash", function(argent)
+RegisterNetEvent("mine:f_getCash")
+AddEventHandler("mine:f_getCash", function(argent)
   ArgentJoueur = argent
 end)
 
-RegisterNetEvent("or:getJobs")
-AddEventHandler("or:getJobs", function(job)
+RegisterNetEvent("mine:getJobs")
+AddEventHandler("mine:getJobs", function(job)
   myjob = job
 end)
 
@@ -165,7 +166,7 @@ Citizen.CreateThread(function()
               Citizen.Wait(1)
               camionSortie = true
               AfficherBlip()
-			  TriggerServerEvent("or:addmoney",(-3000))
+			  TriggerServerEvent("mine:addmoney",(-3000))
 			        ShowMsgtime.msg = "Allez à la mine et n'oubliez pas de ramener le camion pour être rembourser"
               ShowMsgtime.time = 300
             else
@@ -188,7 +189,7 @@ Citizen.CreateThread(function()
               camionSortie = false
               removeBlip()
 			  Wait(100)
-			  TriggerServerEvent("or:addmoney",3000)
+			  TriggerServerEvent("mine:addmoney",3000)
 			  ShowMsgtime.msg = "~r~ Vous avez été remboursé"
               ShowMsgtime.time = 300
 			  money = 0
