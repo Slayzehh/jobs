@@ -74,13 +74,13 @@ end)
 local myjob = 0
 
 
-RegisterNetEvent("mine:f_getCash")
-AddEventHandler("mine:f_getCash", function(argent)
+RegisterNetEvent("agri:getCash_s")
+AddEventHandler("agri:getCash_s", function(argent)
   ArgentJoueur = argent
 end)
 
-RegisterNetEvent("mine:getJobs")
-AddEventHandler("mine:getJobs", function(job)
+RegisterNetEvent("agri:getJobs")
+AddEventHandler("agri:getJobs", function(job)
   myjob = job
 end)
 
@@ -98,7 +98,7 @@ end)
 Citizen.CreateThread(function()
   --Création des blips pour les faire aparaitre et disparaitre --
   if DrawBlipTradeShow then
-    SetBlipTrade(426, "Entreprise d'Agriculture", 2, Position.Compagnie.x, Position.Compagnie.y, Position.Compagnie.z)
+    SetBlipTrade(426, "~g~Entreprise Halait", 4, Position.Compagnie.x, Position.Compagnie.y, Position.Compagnie.z)
   end
 
   while true do
@@ -141,7 +141,7 @@ Citizen.CreateThread(function()
           ShowInfo('~b~Appuyer sur ~g~E~b~ pour obtenir votre camion', 0)
           if IsControlJustPressed(1,38) then
             TriggerServerEvent("poleemploi:getjobs")
-            TriggerServerEvent("mine:getCash_s")
+            TriggerServerEvent("agri:getCash_s")
             Wait(100)
             if myjob == 14 then
               if ArgentJoueur >= 3000 then
@@ -164,8 +164,8 @@ Citizen.CreateThread(function()
               Citizen.Wait(1)
               camionSortie = true
               AfficherBlip()
-			  TriggerServerEvent("mine:addmoney",(-3000))
-			        ShowMsgtime.msg = "Allez à la mine et n'oubliez pas de ramener le camion pour être rembourser"
+			  TriggerServerEvent("agri:addmoney",(-3000))
+			        ShowMsgtime.msg = "Bon courage, n'oubliez pas de ramener le camion une fois terminé!"
               ShowMsgtime.time = 300
             else
               ShowMsgtime.msg = "Vous n'avez pas assez d'argent, il vous faut 3000$ pour récupérer le camion"
@@ -187,7 +187,7 @@ Citizen.CreateThread(function()
               camionSortie = false
               removeBlip()
 			  Wait(100)
-			  TriggerServerEvent("mine:addmoney",3000)
+			  TriggerServerEvent("agri:addmoney",3000)
 			  ShowMsgtime.msg = "~r~ Vous avez été remboursé"
               ShowMsgtime.time = 300
 			  money = 0
@@ -223,7 +223,7 @@ Citizen.CreateThread(function()
               Wait(100)
               Citizen.Wait(1)
               if (roche+cuivre+fer+diams) < 30 and chance_mat <=1000  then
-                ShowMsgtime.msg = 'Ramassage du ~b~blé ~g~en cours...'
+                ShowMsgtime.msg = 'Ramassage du ~b~blé...'
                 ShowMsgtime.time = 250
                 TriggerEvent("vmenu:anim" ,"pickup_object", "pickup_low")
                 Wait(2500)
@@ -233,7 +233,7 @@ Citizen.CreateThread(function()
                 chance = chance + 1
 
               else
-                ShowMsgtime.msg = '~r~ Inventaire plein, allez au traitement !'
+                ShowMsgtime.msg = '~r~ Inventaire plein!'
                 ShowMsgtime.time = 150
               end
             else
@@ -251,7 +251,7 @@ Citizen.CreateThread(function()
     local distance = GetDistanceBetweenCoords(playerPos.x, playerPos.y, playerPos.z, Position.traitement.x, Position.traitement.y, Position.traitement.z, true)
     if not IsInVehicle() then
       if distance < Position.traitement.distance then
-        ShowInfo('~b~Appuyez sur ~g~E~b~ pour traiter le ~b~', 0)
+        ShowInfo('~b~Appuyez sur ~g~E~b~ pour traiter le ~b~Blé', 0)
         if IsControlJustPressed(1, 38) then
           TriggerServerEvent("poleemploi:getjobs")
           Wait(100)
@@ -282,7 +282,7 @@ Citizen.CreateThread(function()
               -- end)
               Wait(100)
               if roche ~= 0 and (roche_trait+cuivre_trait+fer_trait+diams_trait) < 30 then
-                ShowMsgtime.msg = '~g~ Traitement du ~b~blé'
+                ShowMsgtime.msg = '~g~ Traitement du ~b~blé...'
                 ShowMsgtime.time = 250
                 TriggerEvent("vmenu:anim" ,"pickup_object", "pickup_low")
                 Wait(2500)
@@ -292,7 +292,7 @@ Citizen.CreateThread(function()
                 TriggerEvent("player:looseItem", 28, 1)
                 TriggerEvent("player:receiveItem", 29, 1)
               else
-                ShowMsgtime.msg = "~r~ Vous n'avez plus aucun blé, allez à l'acheteur !"
+                ShowMsgtime.msg = "~r~ Vous n'avez plus de blé!"
                 ShowMsgtime.time = 300
               end
             else
@@ -310,7 +310,7 @@ Citizen.CreateThread(function()
     local distance = GetDistanceBetweenCoords(playerPos.x, playerPos.y, playerPos.z, Position.vente.x, Position.vente.y, Position.vente.z, true)
     if not IsInVehicle() then
       if distance < Position.vente.distance then
-        ShowInfo('~b~ Appuyez sur ~g~E~b~ pour vendre', 0)
+        ShowInfo('~b~ Appuyez sur ~g~E~b~ pour vendre votre Pain', 0)
         if IsControlJustPressed(1, 38) then
           TriggerServerEvent("poleemploi:getjobs")
           Wait(100)
@@ -329,14 +329,14 @@ Citizen.CreateThread(function()
               -- end)
               Wait(100)
               if roche ~= 0 then
-                ShowMsgtime.msg = '~g~Vendre le ~b~pain'
+                ShowMsgtime.msg = '~g~Vente du ~b~pain...'
                 ShowMsgtime.time = 250
                 Wait(2500)
                 ShowMsgtime.msg = '~g~ 1 Pain vendu'
 				        TriggerEvent("inventory:sell",0, 1, 29, PrixRoche, "")
                 ShowMsgtime.time = 150
               else
-                ShowMsgtime.msg = "~r~ Vous n'avez plus aucun or, allez rendre votre camion pour recevoir votre argent !"
+                ShowMsgtime.msg = "~r~ Vous n'avez plus de pain!"
                 ShowMsgtime.time = 300
               end
             else
@@ -398,7 +398,7 @@ function AfficherBlip()
   BlipMine = AddBlipForCoord(Position.Recolet.x, Position.Recolet.y, Position.Recolet.z)
 
   SetBlipSprite(BlipMine, 17)
-  SetBlipColour(BlipMine, 1)
+  SetBlipColour(BlipMine, 4)
   SetBlipAsShortRange(BlipMine, true)
   BeginTextCommandSetBlipName("STRING")
   AddTextComponentString('Ramassage du blé')
@@ -407,7 +407,7 @@ function AfficherBlip()
   BlipTraitement = AddBlipForCoord(Position.traitement.x, Position.traitement.y, Position.traitement.z)
 
   SetBlipSprite(BlipTraitement, 18)
-  SetBlipColour(BlipTraitement, 1)
+  SetBlipColour(BlipTraitement, 4)
   SetBlipAsShortRange(BlipTraitement, true)
   BeginTextCommandSetBlipName("STRING")
   AddTextComponentString('Traitement du blé')
@@ -416,7 +416,7 @@ function AfficherBlip()
   BlipVenteMine = AddBlipForCoord(Position.vente.x, Position.vente.y, Position.vente.z)
 
   SetBlipSprite(BlipVenteMine, 19)
-  SetBlipColour(BlipVenteMine, 1)
+  SetBlipColour(BlipVenteMine, 4)
   SetBlipAsShortRange(BlipVenteMine, true)
   BeginTextCommandSetBlipName("STRING")
   AddTextComponentString('Vente du pain')
